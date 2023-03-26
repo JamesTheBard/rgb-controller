@@ -1,4 +1,29 @@
-# Commands
+# RGB Controller of Doom
+
+The serial port is set at `9600` baud by default, the speed can be changed if necessary.
+
+After connecting to the micro, you can run commands to make things glow on the LED strips.  For example, to set a gradient from red to blue across 30 LEDs on the strip connected to port 0, set the brightness to `20`, display the changes, and save the configuration, you would use the following commands:
+
+```
+gra0001df0000f;
+bri20;
+sho;
+sav;
+```
+
+If typed in correctly, you should see the following output from the terminal:
+
+```
+[OK]: gra0001df0000f
+[OK]: bri20
+[OK]: sho
+[OK]: sav
+```
+
+All command end with a semicolon.  Hitting **Enter** while typing a command will show you what is currently in the command buffer and will not be part of the command.  Also, backspace is not currently implemented so deleting typos isn't really going to work.
+
+
+## Commands
 
 | Command | Format | Comment |
 |:-:|:--|:--|
@@ -14,7 +39,7 @@
 
 All `RGB` values can be `RGB` or `RRGGBB`.  Commands end with a semicolon.
 
-# Ports
+## Ports
 
 ## ItsyBitsy M4
 
