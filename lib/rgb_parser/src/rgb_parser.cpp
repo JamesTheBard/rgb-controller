@@ -6,6 +6,8 @@ String valid_data_values = "abcdef0123456789";
 String valid_command_values =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+char version[] = "1.0.1";
+
 bool valid_command = true;
 bool verbose_output = true;
 
@@ -19,7 +21,8 @@ typedef enum {
   Show,
   SaveConfig,
   LoadConfig,
-  SetOutput
+  SetOutput,
+  GetVersion
 } RGBCommands;
 
 std::map<String, int> commandMap;
@@ -34,6 +37,7 @@ void Parser::initializeCommands() {
   commandMap["sav"] = SaveConfig;
   commandMap["loa"] = LoadConfig;
   commandMap["log"] = SetOutput;
+  commandMap["ver"] = GetVersion;
 }
 
 void Parser::begin(int baud) {
@@ -119,6 +123,15 @@ void Parser::setGradient() {
   controller.setGradient(port, range, colors);
 }
 
+void Parser::getVersion() {
+  if (command_buffer.length() != 3) {
+    error("invalid length");
+    return;
+  }
+  Serial.print(">>>> Version " );
+  Serial.println(version);
+}
+
 void Parser::parseCommand() {
   valid_command = true;
   command_buffer.toLowerCase();
@@ -131,6 +144,9 @@ void Parser::parseCommand() {
   int len = command_buffer.length();
 
   switch (commandMap[command]) {
+  case GetVersion:
+    getVersion();
+    break;
   case SetPortColor:
     setPortColor();
     break;

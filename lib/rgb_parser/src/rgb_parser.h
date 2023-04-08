@@ -16,6 +16,7 @@ public:
 private:
   void error(String message, String prompt = "[ER]: ");
   void accept(String message, String prompt = "[OK]: ");
+  void getVersion();
   bool validateData();
   void setPortColor();
   void setPortColorRange();

@@ -3,7 +3,11 @@
 
 Parser cmd_parser;
 
-void setup() { cmd_parser.begin(); }
+void setup() {
+  cmd_parser.begin();
+  delay(2000);
+  cmd_parser.controller.show();
+}
 
 void loop() {
   cmd_parser.parseConsole();
