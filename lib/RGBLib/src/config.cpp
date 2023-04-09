@@ -39,5 +39,6 @@ void Controller::initializeConfig() {
     }
   }
 
+  delay(config.startup_delay);
   FastLED.show();
 }

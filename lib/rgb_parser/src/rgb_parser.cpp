@@ -6,7 +6,7 @@ String valid_data_values = "abcdef0123456789";
 String valid_command_values =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-char version[] = "1.0.1";
+char version[] = "1.0.2";
 
 bool valid_command = true;
 bool verbose_output = true;
@@ -22,7 +22,8 @@ typedef enum {
   SaveConfig,
   LoadConfig,
   SetOutput,
-  GetVersion
+  GetVersion,
+  SetDelayOnBoot
 } RGBCommands;
 
 std::map<String, int> commandMap;
@@ -38,6 +39,7 @@ void Parser::initializeCommands() {
   commandMap["loa"] = LoadConfig;
   commandMap["log"] = SetOutput;
   commandMap["ver"] = GetVersion;
+  commandMap["del"] = SetDelayOnBoot;
 }
 
 void Parser::begin(int baud) {
@@ -74,6 +76,15 @@ bool Parser::validateData() {
     }
   }
   return true;
+}
+
+void Parser::setDelayOnBoot() {
+  int len = command_buffer.length();
+  if (len != 7) {
+    error("invalid length");
+    return;
+  }
+  controller.config.startup_delay = command_buffer.substring(3).toInt();
 }
 
 void Parser::setPortColor() {
@@ -158,6 +169,9 @@ void Parser::parseCommand() {
     break;
   case SetGradient:
     setGradient();
+    break;
+  case SetDelayOnBoot:
+    setDelayOnBoot();
     break;
   case SetBrightness:
     if (len != 5) {

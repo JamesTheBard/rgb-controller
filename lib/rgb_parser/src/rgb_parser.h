@@ -23,6 +23,7 @@ private:
   void setPixelColor();
   void setGradient();
   void setOutput();
+  void setDelayOnBoot();
 };
 
 #endif

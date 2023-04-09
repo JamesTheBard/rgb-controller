@@ -10,11 +10,13 @@ const unsigned int NUM_OF_LEDS = 256;
 typedef struct {
   int signature;
   unsigned char brightness;
+  uint32_t startup_delay;
   CRGB ports[NUM_OF_PORTS][NUM_OF_LEDS];
 } RGBConfig;
 
 class Controller {
 public:
+  RGBConfig config;
   bool loadConfig();
   void initializeConfig();
   void saveConfig();
@@ -34,7 +36,6 @@ public:
   void show();
 
 private:
-  RGBConfig config;
   CRGB parseRGBString(String color);
   int getPixelFromString(String pixel);
 };

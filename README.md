@@ -37,6 +37,7 @@ All command end with a semicolon.  Hitting **Enter** while typing a command will
 | `loa` | `loa` | Load settings/state from flash. |
 | `log` | `logX` | Set the verbosity of the output.  `1` is default, `0` will limit output to periods (`.`) for successful commands, and exclamation marks for errors. |
 | `ver` | `ver` | Get the current firmware version flashed on the RGB controller |
+| `del` | `delTTTT` | Set the boot delay before issuing the initial `show` command in milliseconds. |
 
 All `RGB` values can be `RGB` or `RRGGBB`.  Commands end with a semicolon.
 
