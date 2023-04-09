@@ -5,7 +5,7 @@ Parser cmd_parser;
 
 void setup() {
   cmd_parser.begin();
-  delay(2000);
+  delay(3000);
   cmd_parser.controller.show();
 }
 

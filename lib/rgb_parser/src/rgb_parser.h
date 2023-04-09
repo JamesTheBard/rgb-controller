@@ -24,6 +24,7 @@ private:
   void setGradient();
   void setOutput();
   void setDelayOnBoot();
+  void dumpConfig();
 };
 
 #endif

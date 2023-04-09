@@ -6,7 +6,7 @@ String valid_data_values = "abcdef0123456789";
 String valid_command_values =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-char version[] = "1.0.2";
+char version[] = "1.0.3";
 
 bool valid_command = true;
 bool verbose_output = true;
@@ -23,7 +23,8 @@ typedef enum {
   LoadConfig,
   SetOutput,
   GetVersion,
-  SetDelayOnBoot
+  SetDelayOnBoot,
+  DumpConfig
 } RGBCommands;
 
 std::map<String, int> commandMap;
@@ -40,6 +41,7 @@ void Parser::initializeCommands() {
   commandMap["log"] = SetOutput;
   commandMap["ver"] = GetVersion;
   commandMap["del"] = SetDelayOnBoot;
+  commandMap["dmp"] = DumpConfig;
 }
 
 void Parser::begin(int baud) {
@@ -76,6 +78,31 @@ bool Parser::validateData() {
     }
   }
   return true;
+}
+
+void Parser::dumpConfig() {
+  if (command_buffer.length() != 3) {
+    error("invalid length");
+    return;
+  }
+  char buffer[15];
+  Serial.println(">>>>> BEGIN CONFIG DUMP <<<<<");
+  for (unsigned int i = 0; i < NUM_OF_PORTS; i++) {
+    for (unsigned int j = 0; j < NUM_OF_LEDS; j++) {
+      sprintf(buffer, "set%01X%02X%02X%02X%02X;",
+        i,
+        j,
+        controller.config.ports[i][j].r,
+        controller.config.ports[i][j].g,
+        controller.config.ports[i][j].b);
+      Serial.print(buffer);
+    }
+  }
+  sprintf(buffer, "sho%02X;", controller.config.brightness);
+  Serial.print(buffer);
+  sprintf(buffer, "del%04lX;", controller.config.startup_delay);
+  Serial.println(buffer);
+  Serial.println(">>>>> END CONFIG DUMP <<<<<");
 }
 
 void Parser::setDelayOnBoot() {
@@ -172,6 +199,9 @@ void Parser::parseCommand() {
     break;
   case SetDelayOnBoot:
     setDelayOnBoot();
+    break;
+  case DumpConfig:
+    dumpConfig();
     break;
   case SetBrightness:
     if (len != 5) {
