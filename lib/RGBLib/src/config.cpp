@@ -31,7 +31,7 @@ void Controller::initializeConfig() {
   FastLED.addLeds<NEOPIXEL, 19>(config.ports[5], NUM_OF_LEDS);
 
   if (!loadConfig()) {
-    config.brightness = 50;
+    config.brightness = 0xFF;
     for (unsigned int i = 0; i < NUM_OF_PORTS; i++) {
       for (unsigned int j = 0; j < NUM_OF_LEDS; j++) {
         config.ports[i][j] = CRGB::Black;

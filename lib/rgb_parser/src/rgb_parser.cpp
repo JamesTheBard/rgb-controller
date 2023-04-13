@@ -89,7 +89,7 @@ void Parser::dumpConfig() {
   Serial.println(">>>>> BEGIN CONFIG DUMP <<<<<");
   for (unsigned int i = 0; i < NUM_OF_PORTS; i++) {
     for (unsigned int j = 0; j < NUM_OF_LEDS; j++) {
-      sprintf(buffer, "set%01X%02X%02X%02X%02X;",
+      sprintf(buffer, "pix%01x%02x%02x%02x%02x;",
         i,
         j,
         controller.config.ports[i][j].r,
@@ -98,9 +98,9 @@ void Parser::dumpConfig() {
       Serial.print(buffer);
     }
   }
-  sprintf(buffer, "sho%02X;", controller.config.brightness);
+  sprintf(buffer, "bri%02x;", controller.config.brightness);
   Serial.print(buffer);
-  sprintf(buffer, "del%04lX;", controller.config.startup_delay);
+  sprintf(buffer, "del%04lx;", controller.config.startup_delay);
   Serial.println(buffer);
   Serial.println(">>>>> END CONFIG DUMP <<<<<");
 }
@@ -111,7 +111,10 @@ void Parser::setDelayOnBoot() {
     error("invalid length");
     return;
   }
-  controller.config.startup_delay = command_buffer.substring(3).toInt();
+  char buffer[5];
+  String delay = command_buffer.substring(3);
+  delay.toCharArray(buffer, 5);
+  controller.config.startup_delay = strtol(buffer, 0, 16);
 }
 
 void Parser::setPortColor() {
